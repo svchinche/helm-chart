@@ -1,0 +1,24 @@
+apiVersion: v2
+name: ccoms
+description: A Helm chart for Kubernetes
+version: 0.1.0
+appVersion: 1.16.0
+dependencies:
+- name: mongo
+  version: "0.1.0"
+  repository: "https://svchinche.github.io/helm-chart"
+- name: config
+  version: "0.1.0"
+  repository: "https://svchinche.github.io/helm-chart"
+- name: employee
+  version: "0.1.0"
+  repository: "https://svchinche.github.io/helm-chart"
+- name: department
+  version: "0.1.0"
+  repository: "https://svchinche.github.io/helm-chart"
+- name: organization
+  version: "0.1.0"
+  repository: "https://svchinche.github.io/helm-chart"
+- name: proxy
+  version: "0.1.0"
+  repository: "https://svchinche.github.io/helm-chart"
