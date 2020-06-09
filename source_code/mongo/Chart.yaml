@@ -3,7 +3,3 @@ appVersion: "1.0"
 description: A Helm chart for mongo microservice
 name: mongo
 version: 0.1.0
-dependencies:
-- name: common
-  version: "0.1.0"
-  repository: "https://svchinche.github.io/helm-chart"

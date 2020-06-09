@@ -1,6 +1,0 @@
-dependencies:
-- name: common
-  repository: https://svchinche.github.io/helm-chart
-  version: 0.1.0
-digest: sha256:3751fe4394e566d528e2b14a5d4e1ff3361e9a7403b46074d77157aaff71862f
-generated: "2020-06-09T10:02:50.345985189-04:00"

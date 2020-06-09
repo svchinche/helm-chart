@@ -3,4 +3,4 @@ dependencies:
   repository: https://svchinche.github.io/helm-chart
   version: 0.1.0
 digest: sha256:3751fe4394e566d528e2b14a5d4e1ff3361e9a7403b46074d77157aaff71862f
-generated: "2020-06-09T09:39:45.539127997-04:00"
+generated: "2020-06-09T10:21:05.279641168-04:00"
