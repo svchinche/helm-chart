@@ -1,24 +1,36 @@
-secret:
-  name: ccoms-secrets
+replicaCount: 5
 
+image:
+  repository: mongo
+  tag: 4.2
+  pullPolicy: Always
+
+global:
+  secret:
+    name: ccoms-secrets
+  profile: dev
+  env:
+    secrets:
+      DB_USER: "mongo"
+      DB_PASSWD: "mongo123"
+      DATABASE: "ccoms"
+
+
+
+ingress:
+  enabled: false
+
+db_secret:
+  name: db-secrets
+  
 env:
-  secrets:
-    DB_USER: "mongo"
-    DB_PASSWD: "mongo123"
-    DATABASE: "ccoms"
+  db_secrets:
+    MONGO_INITDB_ROOT_USERNAME: "admin"
+    MONGO_INITDB_ROOT_PASSWORD: "admin123"
+    MONGO_INITDB_DATABASE: "admin"
   normal:
-    CCOMS_DATABASE_PORT: 27017
-    CCOMS_CONFIG_PORT: 8888
-    CCOMS_EMP_PORT: 8080
-    CCOMS_DEPT_PORT: 8081
-    CCOMS_ORG_PORT: 8082
-    CCOMS_PROXY_PORT: 8111
-    app.profile: dev
-
-profile: dev
-
-## External ip address for Proxy Microservice 
-externalIPaddress: 
+    DATABASE_PORT: 27017
+    ROLE: mongo
 
 #####  Mongo Values ##########
 mongodb:
@@ -43,4 +55,3 @@ persistence:
   # annotations: {}
   # subPath: ""
   # existingClaim:
-

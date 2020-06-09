@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "name" . }}-setup-script
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+data:
+  setup.sh: |
+    #!/bin/sh
+    # Setup script to create MongoDB users
+
+    errorExit () {
+      echo; echo "ERROR: $1"; echo; exit 1
+    }
+
+    echo "Waiting for mongodb to come up"
+
+    until mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --eval "db.adminCommand('ping')" > /dev/null 2>&1; 
+    do
+      echo "Waiting for db availability"
+      sleep 2
+    done
+
+    echo "DB ready. Configuring..."
+
+    #mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 < /scripts/createMongoDBUsers.js || errorExit "DB user setup failed"
+    
+    user_cmd="mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 < /scripts/createMongoDBUsers.js"
+    until $user_cmd | grep -qi 'Successfully added user' 
+    do
+      echo "Waiting for 'User Creation' command execution on Master-Node, exit status is $?"
+      sleep 1
+    done
+    
+    echo "User has been succefully added"
+    echo "DB config done"
+
+  createMongoDBUsers.js: |
+    // Problem - Request was going to random node from cluster and sometime it was failing on slave node.
+    // Solution - execute this command on admin host only
+    // rs.initiate()
+
+    // Creating default admin user
+    var adminUser = {
+        user: "{{ .Values.env.db_secrets.MONGO_INITDB_ROOT_USERNAME }}",
+        pwd: "{{ .Values.env.db_secrets.MONGO_INITDB_ROOT_PASSWORD }}",
+        roles: ["root"],
+        customData: {
+            createdBy: "App installer"
+        }
+    }
+    db.getSiblingDB("admin").createUser(adminUser)
+
+    // Creating default app user
+    var appUser = {
+        user: "{{ .Values.global.env.secrets.DB_USER }}",
+        pwd: "{{ .Values.global.env.secrets.DB_PASSWD }}",
+        roles: ["dbOwner"],
+        customData: {
+            createdBy: "App installer"
+        }
+    }
+    // Authenticating as admin to create user
+    var loginOutput = db.getSiblingDB("admin").auth(adminUser.user,adminUser.pwd)
+    db.getSiblingDB("{{ .Values.global.env.secrets.DB_USER }}").createUser(appUser)
+
+    // Check if user exists before creation
+    function createUserDB(dbName, dbUser) {
+        db.getSiblingDB(dbName).getUser(dbUser.user) || db.getSiblingDB(dbName).createUser(dbUser);
+    }
+
+    createUserDB("{{ .Values.global.env.secrets.DATABASE }}", appUser);
+    db.users.insert({name:"Suyog Chinche", age:27, email:"suyog_chinche@yahoo.com"});
+    db.users.insert({name:"Suraj Chinche", age:46, email:"suraj_chinche@yahoo.com"});
+    db.users.insert({name:"Sachin Chinche", age:53, email:"sachin.chinche@yahoo.com"});
+    

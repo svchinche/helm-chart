@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "name" . }}
+  labels:
+    role: {{ .Values.global.env.normal.ROLE }}
+    environment: {{ .Values.global.profile }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ template "name" . }}
+  selector:
+    matchLabels:
+      role: {{ .Values.global.env.normal.ROLE }}
+      environment: {{ .Values.global.profile }}
+  template:
+    metadata:
+      labels:
+        role: {{ .Values.global.env.normal.ROLE }}
+        environment: {{ .Values.global.profile }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: {{ template "name" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        command:
+        - mongod
+        - "--replSet"
+        - rs0
+        - "--bind_ip"
+        - 0.0.0.0
+        volumeMounts:
+        - mountPath: {{ .Values.persistence.mountPath | quote }}
+          name: dbvolumes
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.global.env.normal.DATABASE_PORT }}
+        env:
+{{- include "helpers.list-env-database-variables" . | indent 8 }}
+      - name: mongo-sidecar
+        image: cvallance/mongo-k8s-sidecar
+        env:
+        - name: MONGO_SIDECAR_POD_LABELS
+          value: "role=mongo,environment={{ .Values.global.profile }}"
+{{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: dbvolumes
+    spec:
+      accessModes:
+      {{- range .Values.persistence.accessModes }}
+      - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size | quote }}
+      {{- if .Values.persistence.storageClass }}
+      {{- if (eq "-" .Values.persistence.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.persistence.storageClass }}"
+      {{- end }}
+      {{- end }}
+{{- else }}
+  volumes:
+  - name: dbvolumes
+    emptyDir: {}
+{{- end }}

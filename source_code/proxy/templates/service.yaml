@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "name" . }}
+  labels:
+    app: {{ template "name" . }}
+spec:
+  ports:
+    - port: {{ .Values.global.env.normal.CCOMS_PROXY_PORT }}
+      protocol: TCP
+  selector:
+    app: {{ template "name" . }}
+  externalIPs:
+  -  {{ .Values.global.externalIPaddress }} 

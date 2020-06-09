@@ -1,0 +1,21 @@
+dependencies:
+- name: mongo
+  repository: https://svchinche.github.io/helm-chart
+  version: 0.1.0
+- name: config
+  repository: https://svchinche.github.io/helm-chart
+  version: 0.1.0
+- name: employee
+  repository: https://svchinche.github.io/helm-chart
+  version: 0.1.0
+- name: department
+  repository: https://svchinche.github.io/helm-chart
+  version: 0.1.0
+- name: organization
+  repository: https://svchinche.github.io/helm-chart
+  version: 0.1.0
+- name: proxy
+  repository: https://svchinche.github.io/helm-chart
+  version: 0.1.0
+digest: sha256:04197dfdff840ebd0596b76dc0227c40a75bc28a1cf7f363f962291ef32ad211
+generated: "2020-06-09T09:38:58.266259061-04:00"

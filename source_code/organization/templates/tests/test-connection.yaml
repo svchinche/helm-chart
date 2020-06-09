@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ template "name" . }}
+  labels:
+    app: {{ template "name" . }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "organization.fullname" . }}:{{ .Values.global.env.normal.CCOMS_ORG_PORT }}']
+  restartPolicy: Never
