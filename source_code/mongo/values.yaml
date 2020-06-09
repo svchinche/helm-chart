@@ -15,8 +15,6 @@ global:
       DB_PASSWD: "mongo123"
       DATABASE: "ccoms"
 
-
-
 ingress:
   enabled: false
 

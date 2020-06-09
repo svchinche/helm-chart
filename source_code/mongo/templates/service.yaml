@@ -6,9 +6,9 @@ metadata:
       app: {{ template "name" . }}
 spec:
    ports:
-   -  port: {{ .Values.global.env.normal.DATABASE_PORT }}
+   -  port: {{ .Values.env.normal.DATABASE_PORT }}
       protocol: TCP
    selector:
-      role: {{ .Values.global.env.normal.ROLE }}
+      role: {{ .Values.env.normal.ROLE }}
       environment: {{ .Values.global.profile }}
    clusterIP: None
