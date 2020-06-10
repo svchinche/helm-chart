@@ -23,14 +23,14 @@ else
 fi
 
 ###replace hostip and exteripaddressin in k8s manifest file
-
-host_name=$(hostname -f)
-externalIPaddress=$(hostname -I | awk '{print $1}')
-file_name="$SCRIPTPATH/../common/values.yaml"
-sed -i "s/server:.*/server: $host_name/g" $file_name
-sed -i "s/^externalIPaddress:.*/externalIPaddress: ${externalIPaddress}/g" $file_name
-sed -i "s/networkResource: hostPath/networkResource: nfs/g" $file_name
+##---------- This has been achieved thorough set values
+#host_name=$(hostname -f)
+#externalIPaddress=$(hostname -I | awk '{print $1}')
+#file_name="$SCRIPTPATH/../common/values.yaml"
+#sed -i "s/server:.*/server: $host_name/g" $file_name
+#sed -i "s/^externalIPaddress:.*/externalIPaddress: ${externalIPaddress}/g" $file_name
+#sed -i "s/networkResource: hostPath/networkResource: nfs/g" $file_name
 
 ### Get data from yaml and update it create_user.json
-
-sh $SCRIPTPATH/get_data_from_json.sh
+### -- User is being created through job container
+#sh $SCRIPTPATH/get_data_from_json.sh

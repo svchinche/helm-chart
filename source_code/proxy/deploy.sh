@@ -22,5 +22,7 @@ do
 done
 #echo "namespace name is :: $namespace"
 
+externalIPaddress=$(hostname -I | awk '{print $1}')
+
 ## Create deployment
-helm install --debug proxy --namespace=$namespace $SCRIPTPATH/../proxy
+helm install --debug proxy --set global.externalIPaddress=$externalIPaddress --namespace=$namespace $SCRIPTPATH/../proxy

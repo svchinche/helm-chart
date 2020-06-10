@@ -23,14 +23,14 @@ done
 #echo "namespace name is :: $namespace"
 
 # include retry function
-. $SCRIPTPATH/../common/utilities.sh
+#. $SCRIPTPATH/../common/utilities.sh
 
 ## Create namespace. as namespace creation at run time not supported in helm3
 #kubectl create namespace $namespace
+server_name=$(hostname -f)
 
 ## Create deployment
-helm install --debug mongo --create-namespace --namespace=$namespace $SCRIPTPATH/../mongo
-
+helm install --debug mongo --create-namespace --namespace=$namespace --set persistence.networkResource=nfs --set persistence.server=$server_name $SCRIPTPATH/../mongo
 
 ## Create deployment
 #result=$(kubectl get pod -n $namespace | grep mongo | grep -i running)
