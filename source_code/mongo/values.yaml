@@ -31,7 +31,7 @@ env:
     ROLE: mongo
 
 ## Creating namespace
-createReleaseNamespace: true
+#createReleaseNamespace: true
 
 #####  Mongo Values ##########
 mongodb:
