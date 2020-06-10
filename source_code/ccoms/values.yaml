@@ -1,3 +1,4 @@
+###################### All Global Variables ###########################
 global:
   secret:
     name: ccoms-secrets
@@ -17,3 +18,98 @@ global:
   profile: dev
   ## External ip address for Proxy Microservice 
   externalIPaddress: 
+
+############# All local Variables ###########################
+############### Mongo variables #############################
+mongo:
+  replicaCount: 5
+  image:
+    repository: mongo
+    tag: 4.2
+    pullPolicy: Always
+  ingress:
+    enabled: false
+  db_secret:
+    name: db-secrets
+  env:
+    db_secrets:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "admin123"
+      MONGO_INITDB_DATABASE: "admin"
+    normal:
+      DATABASE_PORT: 27017
+      ROLE: mongo
+  ## Creating namespace
+  #createReleaseNamespace: true
+  #####  Mongo Values ##########
+  mongodb:
+    enabled: true
+  ## Persist data to a persistent volume
+  persistence:
+    enabled: true
+    storageClass: manual
+    accessModes:
+      - ReadWriteOnce
+      - ReadWriteMany
+    size: 400Mi
+    pvs: 5
+    mountPath: /data/db
+    ### TGoogle Compute Engine persistent disk, an NFS share, or an Amazon Elastic Block Store volume
+    ### hostpath is for local and nfs is for nfs 
+    ## network 
+    networkResource: hostPath
+    ## provide below value in case you are using nfs network resource, otherwise below value will not be used
+    server: 
+    # annotations: {}
+    # subPath: ""
+    # existingClaim:
+
+############################# Config variables ##########################  
+config:
+  replicaCount: 2
+  image:
+    repository: compucomm/config-service
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    enabled: false
+
+############################# Departement variables ##########################
+department: 
+  replicaCount: 3
+  image:
+    repository: compucomm/dept-service
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    enabled: false
+
+############################# Employee variables ##########################
+employee:
+  replicaCount: 3 
+  image:
+    repository: compucomm/emp-service
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    enabled: false
+
+############################# Organization variables ########################## 
+organization:
+  replicaCount: 3
+  image:
+    repository: compucomm/org-service
+    tag: latest
+    pullPolicy: Always    
+  ingress:
+    enabled: false
+
+############################# Proxy variables ################################
+proxy: 
+  replicaCount: 2
+  image:
+    repository: compucomm/gateway-service
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    enabled: false
