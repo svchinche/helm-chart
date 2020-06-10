@@ -63,7 +63,7 @@ Create the name of the service account to use
       name: db-secrets
       key: {{ $key }}
 {{- end}}
-{{- range $key, $val := .Values.global.env.normal }}
+{{- range $key, $val := .Values.env.normal }}
 - name: {{ $key }}
   value: {{ $val | quote }}
 {{- end}}
