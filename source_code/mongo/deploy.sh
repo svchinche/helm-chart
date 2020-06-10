@@ -29,7 +29,7 @@ done
 #kubectl create namespace $namespace
 
 ## Create deployment
-helm install --debug mongo --namespace=$namespace $SCRIPTPATH/../mongo
+helm install --debug mongo --create-namespace --namespace=$namespace $SCRIPTPATH/../mongo
 
 
 ## Create deployment
