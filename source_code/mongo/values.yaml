@@ -30,6 +30,9 @@ env:
     DATABASE_PORT: 27017
     ROLE: mongo
 
+## Creating namespace
+createReleaseNamespace: true
+
 #####  Mongo Values ##########
 mongodb:
   enabled: true
