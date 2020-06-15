@@ -7,9 +7,8 @@ projects=(ccoms common config department employee mongo organization proxy)
 
 for project in ${projects[@]}
 do
-  helm package -u $project
+  helm package -u $project -d $SCRIPTPATH/../
 done
 
-mv $SCRIPTPATH/*.tgz ../
 
 
