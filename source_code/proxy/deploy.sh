@@ -25,4 +25,4 @@ done
 externalIPaddress=$(hostname -I | awk '{print $1}')
 
 ## Create deployment
-helm install --debug proxy --set global.externalIPaddress=$externalIPaddress --namespace=$namespace $SCRIPTPATH/../proxy
+helm install --debug proxy --set global.externalIPaddress=$externalIPaddress --namespace=$namespace --dependency-update $SCRIPTPATH/../proxy

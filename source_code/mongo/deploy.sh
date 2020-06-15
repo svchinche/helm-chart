@@ -30,7 +30,7 @@ done
 server_name=$(hostname -f)
 
 ## Create deployment
-helm install --debug mongo --create-namespace --namespace=$namespace --set persistence.networkResource=nfs --set persistence.server=$server_name $SCRIPTPATH/../mongo
+helm install --debug mongo --create-namespace --namespace=$namespace --dependency-update --set persistence.networkResource=nfs --set persistence.server=$server_name $SCRIPTPATH/../mongo
 
 ## Create deployment
 #result=$(kubectl get pod -n $namespace | grep mongo | grep -i running)

@@ -23,4 +23,4 @@ done
 #echo "namespace name is :: $namespace"
 
 ## Create deployment
-helm install --debug organization --namespace=$namespace $SCRIPTPATH/../organization
+helm install --debug organization --namespace=$namespace --dependency-update $SCRIPTPATH/../organization
