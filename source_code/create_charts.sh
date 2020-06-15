@@ -9,6 +9,3 @@ for project in ${projects[@]}
 do
   helm package -u $project -d $SCRIPTPATH/../
 done
-
-
-
