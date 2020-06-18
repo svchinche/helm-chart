@@ -11,7 +11,7 @@ NFS_CONF_DIR='/etc/exports'
 
 ### Creating shared directories if not present
 [[ ! -d $SHARED_DIR ]] && mkdir -p /u02/pvs
-[[ ! -d $SHARED_DIR/pv0 ]] && ( mkdir -p $SHARED_DIR/{pv0,pv1,pv2,pv3,pv4} )
+[[ ! -d $SHARED_DIR/pv0 ]] && ( mkdir -p $SHARED_DIR/{pv0,pv1,pv2,pv3,pv4} && chmod -R 777 $SHARED_DIR/ )
 
 
 ### Add entry in etc export file and restart if entry added
@@ -24,7 +24,7 @@ fi
 
 ### Copying dump into shared directory
 mkdir -p /u02/mongo_dump && tar -xvf $SCRIPTPATH/mongo_dump/ccoms.tar.gz --directory /u02/mongo_dump/
-chmod -R 777 $SHARED_DIR/
+chmod -R 777 /u02/mongo_dump
 
 ###replace hostip and exteripaddressin in k8s manifest file
 ##---------- This has been achieved thorough set values
