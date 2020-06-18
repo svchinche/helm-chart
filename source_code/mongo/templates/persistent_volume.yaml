@@ -113,7 +113,6 @@ spec:
     server: {{ .Values.persistence.server }}
 {{- end }}
     path: /u02/pvs/pv4
-{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolume
