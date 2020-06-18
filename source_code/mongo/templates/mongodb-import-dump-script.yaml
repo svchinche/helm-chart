@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "name" . }}-import-dump-script
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+data:
+  setup.sh: |
+    #!/bin/sh
+
+    dump_location="/u02/pvs/pv5/mongo_dump"
+    echo "Checking dump availability"
+    [[ ! -d $dump_location ]] && ( echo "Dump directory is not preset" ; exit 0 )  
+    echo "Dump location found"
+
+    echo "Importing mongo db dump"
+    sleep 10
+
+    until mongorestore --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/
+    do
+      echo "Waiting for importing dump"
+      sleep 2
+    done
+    sleep 200
+    echo "DB has been imported succesfully..."

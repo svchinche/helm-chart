@@ -2,14 +2,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ .Release.Name }}-create-user"
+  name: "{{ .Release.Name }}-import-dump"
   labels:
     app: {{ template "name" . }}
     release: {{ .Release.Name }}
     component: mongodb
   annotations:
     "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-weight": "-4"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -24,17 +24,17 @@ spec:
       {{- end }}
       restartPolicy: OnFailure
       containers:
-      - name: post-install-job
-        image: "mvertes/alpine-mongo"
+      - name: dump-import-job
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         command:
         - 'sh'
         - '-c'
         - 'sh /scripts/setup.sh'
         volumeMounts:
-        - name: mongodb-setup
+        - name: mongodb-import-dump
           mountPath: "/scripts"
       volumes:
-      - name: mongodb-setup
+      - name: mongodb-import-dump
         configMap:
-          name: {{ template "name" . }}-setup-script
+          name: {{ template "name" . }}-import-dump-script
 {{- end }}

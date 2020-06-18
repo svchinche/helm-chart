@@ -6,12 +6,12 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 ###
 SHARED_DIR="/u02/pvs"
-DIRS=(pv0,pv1,pv2,pv3,pv4)
+DIRS=(pv0,pv1,pv2,pv3,pv4,pv5)
 NFS_CONF_DIR='/etc/exports'
 
 ### Creating shared directories if not present
 [[ ! -d $SHARED_DIR ]] && mkdir -p /u02/pvs
-[[ ! -d $SHARED_DIR/pv0 ]] && ( mkdir -p $SHARED_DIR/{pv0,pv1,pv2,pv3,pv4} && chmod -R 777 $SHARED_DIR/ )
+[[ ! -d $SHARED_DIR/pv0 ]] && ( mkdir -p $SHARED_DIR/{pv0,pv1,pv2,pv3,,pv5} && chmod -R 777 $SHARED_DIR/ )
 
 
 ### Add entry in etc export file and restart if entry added
@@ -21,6 +21,9 @@ then
 else
   echo "/u02/pvs *(rw,sync,no_root_squash,nohide)" >> $NFS_CONF_DIR && ( systemctl restart nfs && exportfs )
 fi
+
+### Copying dump into shared directory
+mkdir /u02/pvs/pv5/mongo_dir && tar -xvf $SCRIPTPATH/mongo_dump/ccoms.tar.gz --directory /u02/pvs/pv5/mongo_dir
 
 ###replace hostip and exteripaddressin in k8s manifest file
 ##---------- This has been achieved thorough set values

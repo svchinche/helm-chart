@@ -114,3 +114,27 @@ spec:
 {{- end }}
     path: /u02/pvs/pv4
 {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-mongo-dump
+  labels:
+    role: {{ .Values.env.normal.ROLE }}
+spec:
+  storageClassName: {{ .Values.persistence.storageClass }}
+  capacity:
+    storage: {{ .Values.persistence.size }}
+  accessModes:
+    {{- range .Values.persistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
+{{- if (eq "hostPath" .Values.persistence.networkResource) }}
+  hostPath:
+{{- end }}
+{{- if (eq "nfs" .Values.persistence.networkResource) }}
+  nfs:
+    server: {{ .Values.persistence.server }}
+{{- end }}
+    path: /u02/pvs/pv5
+{{- end }}
