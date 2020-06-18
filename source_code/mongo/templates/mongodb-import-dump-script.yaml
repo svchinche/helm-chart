@@ -11,7 +11,7 @@ data:
   setup.sh: |
     #!/bin/sh
 
-    dump_location="/u02/pvs/pv5/mongo_dump"
+    dump_location="/dump"
     echo "Checking dump availability"
     [[ ! -d $dump_location ]] && ( echo "Dump directory is not preset" ; exit 0 )  
     echo "Dump location found"

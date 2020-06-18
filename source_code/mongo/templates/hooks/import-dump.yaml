@@ -31,10 +31,35 @@ spec:
         - '-c'
         - 'sh /scripts/setup.sh'
         volumeMounts:
-        - name: mongodb-import-dump
+        - name: mongodb-import-dump-script
           mountPath: "/scripts"
+        - name: mongodb-import-dump
+          mountPath: "/dump"
       volumes:
-      - name: mongodb-import-dump
+      - name: mongodb-import-dump-script
         configMap:
           name: {{ template "name" . }}-import-dump-script
+{{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-import-dump
+    spec:
+      accessModes:
+      {{- range .Values.persistence.accessModes }}
+      - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size | quote }}
+      {{- if .Values.persistence.storageClass }}
+      {{- if (eq "-" .Values.persistence.storageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.persistence.storageClass }}"
+      {{- end }}
+      {{- end }}
+{{- else }}
+  volumes:
+  - name: dbvolumes
+    emptyDir: {}
 {{- end }}
