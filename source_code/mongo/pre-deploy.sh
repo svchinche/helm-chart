@@ -23,8 +23,8 @@ else
 fi
 
 ### Copying dump into shared directory
-mkdir -p /u02/mongo_dump && tar -xvf $SCRIPTPATH/mongo_dump/ccoms.tar.gz --directory /u02/mongo_dump/
-chmod -R 777 /u02/mongo_dump
+mkdir -p /u02/pvs/mongo_dump && tar -xvf $SCRIPTPATH/mongo_dump/ccoms.tar.gz --directory /u02/pvs/mongo_dump/
+chmod -R 777 $SHARED_DIR/
 
 ###replace hostip and exteripaddressin in k8s manifest file
 ##---------- This has been achieved thorough set values

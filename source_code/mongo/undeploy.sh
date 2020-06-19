@@ -22,7 +22,7 @@ done
 
 
 SHARED_DIR="/u02/pvs"
-pvs_var=(pv-nfs-pv0 pv-nfs-pv1 pv-nfs-pv2 pv-nfs-pv3 pv-nfs-pv4 pv-nfs-mongo-dump)
+pvs_var=(pv-nfs-pv0 pv-nfs-pv1 pv-nfs-pv2 pv-nfs-pv3 pv-nfs-pv4)
 
 
 ## deleting all resources

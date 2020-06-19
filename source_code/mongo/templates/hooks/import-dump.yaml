@@ -47,5 +47,5 @@ spec:
         nfs:
           server: {{ .Values.persistence.server }}
       {{- end }}    
-          path: /u02/mongo_dump    
+          path: /u02/pvs/mongo_dump    
 {{- end }}
