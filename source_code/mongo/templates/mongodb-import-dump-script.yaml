@@ -13,7 +13,13 @@ data:
 
     dump_location="/dump"
     echo "Checking dump availability"
-    [[ ! -d $dump_location ]] && ( echo "Dump directory is not preset" ; exit 0 )  
+    
+    if [ ! -d $dump_location ]
+    then
+      echo "Dump directory is not preset"
+      exit 0
+    fi
+ 
     echo "Dump location found"
 
     echo "Finding out master node information"
