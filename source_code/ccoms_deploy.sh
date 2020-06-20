@@ -2,6 +2,8 @@
 
 CRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
+server_name=$(hostname -f)
+externalIPaddress=$(hostname -I | awk '{print $1}')
 
 if [ $# -lt 1 ]
 then
@@ -25,5 +27,5 @@ done
 kubectl delete clusterrolebindings.rbac.authorization.k8s.io --field-selector metadata.name=mongo-view
 
 ## install ccoms project
-helm install --debug ccoms --create-namespace --namespace=$namespace  --generate-name --dependency-update --set mongo.persistence.networkResource=nfs --set mongo.persistence.server=clm-pun-ua9914 --set  global.externalIPaddress=10.135.35.201 
+helm install --debug ccoms --create-namespace --namespace=$namespace  --generate-name --dependency-update --set mongo.persistence.networkResource=nfs --set mongo.persistence.server=$server_name --set  global.externalIPaddress=$externalIPaddress
 
