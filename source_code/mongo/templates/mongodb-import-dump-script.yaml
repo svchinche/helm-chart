@@ -13,7 +13,7 @@ data:
 
     dump_location="/dump"
     echo "Checking dump availability"
-    
+
     if [ ! -d $dump_location ]
     then
       echo "Dump directory is not preset"
@@ -25,12 +25,12 @@ data:
     echo "Finding out master node information"
     master_node=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']" | awk -F: '{ print $1}')
     
-    echo "Importing mongo db dump"
-
+    echo "Importing mongo db dump on - $master_node"
+    echo "Coomadn is - mongorestore --host $master_node --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/"
     until mongorestore --host $master_node --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/
     do
       echo "Waiting for importing dump"
-      sleep 2
+      sleep 5
     done
     
     echo "DB has been imported succesfully..."
