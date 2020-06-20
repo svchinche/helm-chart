@@ -23,6 +23,9 @@ do
   esac
 done
 
+## Configure nfs server - To use as persistent volume
+sh $SCRIPTPATH/mongo/pre-deploy.sh
+
 ## delete role if it is present
 kubectl delete clusterrolebindings.rbac.authorization.k8s.io --field-selector metadata.name=mongo-view
 
