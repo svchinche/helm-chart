@@ -23,10 +23,17 @@ data:
     echo "Dump location found"
 
     echo "Finding out master node information"
-    master_node=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']" | awk -F: '{ print $1}')
-    
+    master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
+    while [ $? -ne 0 ]
+    do
+      master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
+      echo "Master node info- $master_node_info"
+    done
+
+    master_node=$(echo | awk -F: '{ print $1}')
     echo "Importing mongo db dump on - $master_node"
-    echo "Coomadn is - mongorestore --host $master_node --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/"
+     
+    echo "Importing dump on master node"
     until mongorestore --host $master_node --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/
     do
       echo "Waiting for importing dump"
