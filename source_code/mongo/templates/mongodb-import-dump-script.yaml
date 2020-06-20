@@ -16,13 +16,15 @@ data:
     [[ ! -d $dump_location ]] && ( echo "Dump directory is not preset" ; exit 0 )  
     echo "Dump location found"
 
+    echo "Finding out master node information"
+    master_node=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']" | awk -F: '{ print $1}')
+    
     echo "Importing mongo db dump"
-    sleep 10
 
-    until mongorestore --host {{ template "name" . }}-0.{{ .Release.Namespace }} --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/
+    until mongorestore --host $master_node --port 27017 --db {{ .Values.global.env.secrets.DATABASE }} $dump_location/ccoms/
     do
       echo "Waiting for importing dump"
       sleep 2
     done
-    sleep 200
+    
     echo "DB has been imported succesfully..."
