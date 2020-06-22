@@ -29,8 +29,10 @@ data:
       master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
       echo "Master node info- $master_node_info"
     done
+     
+    echo "Master node info- $master_node_info"
 
-    master_node=$(echo $master_node_info  | awk -F: '{ print $1}')
+    master_node=$(echo $master_node_info | awk -F: '{ print $1}')
     echo "Importing mongo db dump on - $master_node"
      
     echo "Importing dump on master node"
