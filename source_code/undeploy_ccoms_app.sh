@@ -22,6 +22,9 @@ do
 done
 #echo "namespace name is :: $namespace"
 
+## delete role if it is present
+kubectl delete clusterrolebindings.rbac.authorization.k8s.io --field-selector metadata.name=mongo-view
+
 
 ### Undeploying product
 
