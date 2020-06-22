@@ -24,7 +24,7 @@ appVersion: 1.16.0
 
 dependencies:
 - name: mongo
-  version: "0.1.0"
+  version: "0.1.1"
   repository: "https://svchinche.github.io/helm-chart"
 - name: config
   version: "0.1.0"
