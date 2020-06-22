@@ -24,7 +24,7 @@ data:
 
     echo "Finding out master node information"
     master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
-    while [ $? -ne 0 ]
+    while [ $? -ne 0 -a ! -z $master_node_info ]
     do
       master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
       echo "Master node info- $master_node_info"
