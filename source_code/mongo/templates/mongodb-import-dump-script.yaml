@@ -24,13 +24,13 @@ data:
 
     echo "Finding out master node information"
     master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
-    while [ $? -ne 0 && ! -z $master_node_info ]
+    while [ $? -ne 0 ]
     do
       master_node_info=$(mongo --host {{ template "name" . }}.{{ .Release.Namespace }} --port 27017 --quiet --eval "db.isMaster()['"'primary'"']")
       echo "Master node info- $master_node_info"
     done
 
-    master_node=$(echo | awk -F: '{ print $1}')
+    master_node=$(echo $master_node_info  | awk -F: '{ print $1}')
     echo "Importing mongo db dump on - $master_node"
      
     echo "Importing dump on master node"
