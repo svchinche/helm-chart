@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRIPT=$(readlink -f "$0")
+SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 server_name=$(hostname -f)
 externalIPaddress=$(hostname -I | awk '{print $1}')
